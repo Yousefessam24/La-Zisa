@@ -1,0 +1,571 @@
+body {
+  direction: ltr;
+  font-family: "Poppins", sans-serif;
+  background: #f0f0f0;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  color: #333;
+}
+
+.page {
+  display: none;
+  padding: 20px;
+}
+
+.page.active {
+  display: flex;
+  flex-direction: column;
+}
+
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+
+button {
+  background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+  color: white;
+  border: none;
+  padding: 12px 25px;
+  cursor: pointer;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+  margin: 10px;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #0056b3 0%, #004085 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 123, 255, 0.4);
+}
+
+/* تعديل صفحة الريسيت لتكون في المنتصف تماماً */
+#receipt {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+/* الإطار الأبيض المحيط بالريسيت */
+.receipt-card {
+  background: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1); /* ظل ناعم */
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* توسيط كل شيء بالداخل */
+  border-top: 8px solid #28a745; /* خط علوي أخضر ليعطي طابع التأكيد */
+}
+
+/* التأكد من ظهورها كـ flex عند التنشيط */
+#receipt.active {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#add-order-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  display: none;
+}
+
+#add-order-btn i {
+  margin-right: 8px;
+}
+
+#back-to-home {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  display: none;
+}
+
+#back-to-home:hover {
+  background-color: #1976d2;
+}
+
+#back-to-home i {
+  margin-right: 8px;
+}
+
+#view-cart {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #ff9800;
+  color: white;
+  border: none;
+  padding: 15px 20px;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  display: none;
+}
+
+#view-cart:hover {
+  background-color: #f57c00;
+}
+
+#view-cart i {
+  margin-right: 8px;
+}
+
+#orders-list {
+  margin-top: 20px;
+  display: grid;
+  /* تقسيم حقيقي لـ 4 أعمدة متساوية */
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box; /* لضمان عدم خروج المحتوى عن الشاشة بسبب الـ padding */
+}
+
+.order-item {
+  background-color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column; /* ترتيب رأسي */
+  justify-content: flex-start;
+  align-items: stretch; /* لضمان توزيع المحتوى */
+  min-height: 250px;
+  text-align: left; /* بقاء النصوص محاذية لليسار كما في صورتك */
+}
+
+/* تحسين شكل النصوص العلوية */
+.order-item .left {
+  border-bottom: 1px solid #eee;
+  padding-bottom: 10px;
+  margin-bottom: 5px;
+}
+
+.order-item .right {
+  flex-grow: 1;
+  font-size: 0.9rem;
+  color: #666;
+  width: 100%;
+}
+
+.order-item button {
+  /* تغيير اللون للأحمر */
+  background: linear-gradient(135deg, #ff4b2b 0%, #ff416c 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 20px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(255, 75, 43, 0.3);
+
+  /* التوسيط */
+  display: block; /* لجعل المارجن يعمل */
+  margin: 15px auto; /* 15px مسافة من الأعلى والأسفل، و auto للتوسيط العرضي */
+  width: 80%; /* يمكنك التحكم في عرض الزر من هنا */
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-item button:hover {
+  background: linear-gradient(135deg, #ff416c 0%, #ff4b2b 100%);
+  transform: scale(1.05);
+  box-shadow: 0 6px 15px rgba(255, 75, 43, 0.4);
+}
+#menu-items {
+  display: flex;
+  flex-direction: column;
+}
+
+.menu-section {
+  margin-bottom: 30px;
+}
+
+.menu-section h2 {
+  text-align: center;
+  color: #333;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+  border-bottom: 2px solid #28a745;
+  padding-bottom: 10px;
+}
+
+.menu-section .items {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.product-card {
+  width: 300px;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  margin: 15px;
+  border: 1px solid #e9ecef;
+}
+
+.product-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+}
+
+.product-image {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.product-info {
+  background-color: #fff;
+  color: #333;
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1.1rem;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.product-info .price {
+  color: #28a745;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.quantity-section {
+  padding: 15px;
+  background-color: #f8f9fa;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-top: 10px;
+}
+
+.controls button {
+  width: 50px;
+  height: 50px;
+  border: none;
+  border-radius: 50%;
+  font-size: 24px;
+  cursor: pointer;
+  background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+  color: white;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
+  text-align: center;
+  line-height: 50px;
+  font-weight: bold;
+  padding: 0;
+}
+
+.controls button:hover {
+  background: linear-gradient(135deg, #c82333 0%, #a02622 100%);
+  transform: scale(1.1);
+}
+
+.btn-plus {
+  background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+}
+
+.btn-plus:hover {
+  background: linear-gradient(135deg, #1e7e34 0%, #155724 100%);
+}
+
+#quantity {
+  font-size: 1.5rem;
+  font-weight: bold;
+  width: 50px;
+  height: 45px;
+  display: inline-block;
+  text-align: center;
+  line-height: 45px;
+  background-color: #fff;
+  border-radius: 10px;
+  border: 1px solid #dee2e6;
+  vertical-align: middle;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.total-section {
+  background: linear-gradient(135deg, #6c757d 0%, #495057 100%);
+  padding: 15px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  color: white;
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+#cart-items {
+  width: 100%;
+  max-height: 200px; 
+  overflow-y: auto;   /* السماح بالتمرير الرأسي فقط */
+  overflow-x: hidden; /* إلغاء التمرير الأفقي تماماً */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  box-sizing: border-box; /* لضمان أن العرض 100% يشمل الـ padding */
+}
+.cart-item {
+  width: 100%;
+  box-sizing: border-box; /* ضروري جداً لمنع الـ Scroll العرضي */
+  padding: 10px;
+  margin: 0;
+  border-bottom: 1px dashed #eee;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  word-wrap: break-word; /* كسر الكلمات الطويلة */
+  overflow-wrap: break-word;
+}
+
+.cart-item span {
+  flex: 1;
+  text-align: left; /* محاذاة النص لليسار */
+  padding-right: 5px;
+}
+
+.cart-item span {
+  flex: 1;
+  text-align: center;
+}
+
+.cart-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+}
+
+#total {
+  font-size: 1.8rem;
+  font-weight: bold;
+  text-align: center;
+  margin: 30px auto;
+  padding: 20px;
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border-radius: 15px;
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+  max-width: 400px;
+}
+
+input {
+  display: block;
+  width: 100%;
+  max-width: 450px; /* تحديد عرض مناسب */
+  padding: 14px 20px;
+  margin: 10px 0;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px; /* حواف دائرية عصرية */
+  font-size: 1rem;
+  font-family: "Poppins", sans-serif;
+  background-color: #ffffff;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.02);
+  box-sizing: border-box;
+}
+
+/* تأثير عند الضغط على الحقل للكتابة */
+input:focus {
+  outline: none;
+  border-color: #28a745; /* تغيير اللون للأخضر ليناسب زر التأكيد */
+  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.15);
+  transform: translateY(-1px);
+}
+
+#confirm-order {
+  background: linear-gradient(135deg, #28a745 0%, #218838 100%);
+  width: 100%;
+  max-width: 450px;
+  padding: 15px;
+  margin-top: 20px;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 8px 20px rgba(40, 167, 69, 0.2);
+}
+
+#confirm-order:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+}
+#back-to-menu {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+  background-color: #2196f3;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  border-radius: 50px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  font-size: 16px;
+  display: none;
+}
+
+#back-to-menu:hover {
+  background-color: #1976d2;
+}
+
+#back-to-menu i {
+  margin-right: 8px;
+}
+
+.receipt-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.receipt-buttons button {
+  flex: 1;
+  max-width: 200px;
+  padding: 15px 20px;
+  font-size: 18px;
+  font-weight: 600;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+}
+
+/* تحسين حاوية الطلبات */
+#orders-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); /* توزيع مرن */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* تصميم الكارت الجديد */
+/* الخط العلوي للكارت باللون الأزرق */
+/* الخط العلوي للكارت باللون الأزرق */
+.order-item {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+  border-top: 5px solid #2196f3; /* اللون الأزرق الأساسي */
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  margin-bottom: 10px;
+}
+
+/* لون عدد الأصناف (الكمية) باللون الأزرق */
+.item-qty {
+  font-weight: bold;
+  color: #1976d2; /* نص أزرق داكن */
+  background: #e3f2fd; /* خلفية زرقاء فاتحة جداً */
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+/* الجزء العلوي: اسم العميل والطاولة */
+.order-header {
+  padding: 15px;
+  background: #f8f9fa;
+  border-bottom: 1px dashed #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.order-header strong {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.table-badge {
+  background: #333;
+  color: white;
+  padding: 2px 10px;
+  border-radius: 20px;
+  font-size: 0.8rem;
+}
+
+/* منطقة الأصناف */
+.order-details {
+  padding: 15px;
+  flex-grow: 1;
+}
+
+.item-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  font-size: 0.95rem;
+  border-bottom: 1px solid #fcfcfc;
+}
+
+.item-qty {
+  font-weight: bold;
+  color: #1976d2; /* نص أزرق داكن */
+  background: #e3f2fd; /* خلفية زرقاء فاتحة جداً */
+  padding: 2px 8px;
+  border-radius: 5px;
+}
+
+/* زر الحذف في الأسفل */
+.order-footer {
+  padding: 10px 15px;
+  background: #fff;
+  text-align: right;
+}
+
+.delete-btn {
+  background: #fff;
+  color: #ff4b2b;
+  border: 1px solid #ff4b2b;
+  padding: 5px 15px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.delete-btn:hover {
+  background: #ff4b2b;
+  color: white;
+}
