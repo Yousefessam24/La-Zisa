@@ -1,7 +1,67 @@
+:root {
+  /* وضع الإضاءة (Light Mode) */
+  --bg-color: #f4f7f6;
+  --card-bg: #ffffff;
+  --text-color: #2d3436;
+  --text-muted: #636e72;
+  --border-color: #dfe6e9;
+  --input-bg: #ffffff;
+  --primary-color: #28a745;
+  --secondary-color: #2196f3;
+  --shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+}
+
+body.dark-mode {
+  --bg-color: #121212;      /* أسود مطفي عميق */
+  --card-bg: #1e1e1e;      /* رمادي غامق للكروت (الارتفاع الأول) */
+  --text-color: #e0e0e0;   /* أبيض مكسور مريح للعين */
+  --text-muted: #b0b0b0;   /* نصوص فرعية باهتة */
+  --border-color: #333333; /* حدود خفيفة جداً */
+  --input-bg: #2d2d2d;     /* خلفية الحقول */
+  --primary-color: #48bb78;/* درجة أخضر أفتح قليلاً للتباين */
+  --secondary-color: #63b3ed; /* درجة أزرق أفتح للتباين */
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  transition: background 0.4s ease, color 0.4s ease;
+}
+
+h1, h2, h3, strong {
+  color: var(--text-color) !important;
+}
+.order-item,
+.product-card,
+.receipt-card {
+  background: var(--card-bg) !important;
+  color: var(--text-color) !important;
+}
+
+input {
+  background-color: var(--input-bg);
+  color: var(--text-color);
+}
+
+/* تنسيق زر الوضع الليلي */
+#dark-mode-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: var(--card-bg);
+  color: var(--text-color);
+  border: 1px solid #ddd;
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
 body {
   direction: ltr;
   font-family: "Poppins", sans-serif;
-  background: #f0f0f0;
+
   margin: 0;
   padding: 0;
   min-height: 100vh;
@@ -84,7 +144,10 @@ button {
   border-radius: 25px;
   font-size: 16px;
   font-weight: 600;
-  transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease,
+    box-shadow 0.3s ease;
   box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
   margin: 10px;
 }
@@ -243,7 +306,9 @@ button:hover {
   display: block; /* لجعل المارجن يعمل */
   margin: 15px auto; /* 15px مسافة من الأعلى والأسفل، و auto للتوسيط العرضي */
   width: 80%; /* يمكنك التحكم في عرض الزر من هنا */
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .order-item button:hover {
@@ -282,7 +347,9 @@ button:hover {
   border-radius: 15px;
   overflow: hidden;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
   margin: 15px;
   border: 1px solid #e9ecef;
 }
@@ -338,7 +405,9 @@ button:hover {
   cursor: pointer;
   background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
   color: white;
-  transition: background 0.3s ease, transform 0.2s ease;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
   box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
   text-align: center;
   line-height: 50px;
@@ -397,7 +466,6 @@ button:hover {
   margin-bottom: 20px;
   box-sizing: border-box; /* لضمان أن العرض 100% يشمل الـ padding */
 }
-
 
 .cart-item {
   width: 100%;
@@ -797,7 +865,8 @@ input:focus {
     display: none !important;
   }
 
-  #receipt, #receipt.page.active {
+  #receipt,
+  #receipt.page.active {
     display: block !important;
     position: relative;
     width: 100% !important;
@@ -819,25 +888,25 @@ input:focus {
   }
 
   #receipt-customer-info {
-        display: block !important; /* إظهار في الطباعة فقط */
-        width: 100% !important;
-        margin: 15px 0 !important;
-        padding-bottom: 10px !important;
-        border-bottom: 2px solid #333 !important;
-        text-align: left !important; /* محاذاة لليسار لتبدو فاتورة رسمية */
-    }
+    display: block !important; /* إظهار في الطباعة فقط */
+    width: 100% !important;
+    margin: 15px 0 !important;
+    padding-bottom: 10px !important;
+    border-bottom: 2px solid #333 !important;
+    text-align: left !important; /* محاذاة لليسار لتبدو فاتورة رسمية */
+  }
 
-    #receipt-customer-info p {
-        margin: 5px 0 !important;
-        font-size: 14px !important;
-        color: #000 !important;
-    }
+  #receipt-customer-info p {
+    margin: 5px 0 !important;
+    font-size: 14px !important;
+    color: #000 !important;
+  }
 
   /* 3. تكبير اللوجو وضمان بقائه في المنتصف داخل الإطار */
   #receipt-logo {
-        margin-bottom: 10px !important;
-        display: block !important;
-    }
+    margin-bottom: 10px !important;
+    display: block !important;
+  }
 
   /* 4. حل مشكلة تداخل الأصناف مع المجموع */
   #cart-items {
@@ -856,6 +925,10 @@ input:focus {
     page-break-inside: avoid;
   }
 
+  .theme-switch {
+    display: none !important;
+  }
+
   /* 5. ضبط المجموع ليظهر دائماً أسفل آخر صنف */
   #total {
     display: block !important;
@@ -871,11 +944,481 @@ input:focus {
   }
 
   /* إخفاء الأزرار والمدخلات */
-  .receipt-buttons, input, #back-to-menu, #back-to-home {
+  .receipt-buttons,
+  input,
+  #back-to-menu,
+  #back-to-home {
     display: none !important;
   }
 
   @page {
     margin: 0.5cm;
   }
+}
+
+#dark-mode-toggle {
+  width: 4%;
+}
+
+/* From Uiverse.io by Galahhad */
+.theme-switch {
+  /* المتغيرات التي كانت ناقصة وتسببت في الاختفاء */
+  --toggle-size: 10px; /* تصغير الزر */
+  --container-width: 5.625em;
+  --container-height: 2.5em;
+  --container-radius: 6.25em;
+  --container-light-bg: #347cf8;
+  --container-night-bg: #1d1f2c;
+  --circle-container-diameter: 3.375em;
+  --sun-moon-diameter: 2.125em;
+  --sun-bg: #f5ec59;
+  --moon-bg: #d4d4d4;
+  --spot-color: #959595;
+  --clouds-color: #f3fdff;
+  --back-clouds-color: #aadcff;
+  --stars-color: #f5f5f5;
+  --transition: .5s cubic-bezier(0, -0.02, 0.4, 1.25);
+  --circle-transition: .3s cubic-bezier(0, -0.02, 0.35, 1.17);
+  --circle-container-offset: calc((var(--container-height) - var(--circle-container-diameter)) / 2);
+
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 10000;
+  display: inline-block;
+  cursor: pointer;
+}
+
+/* احذف الـ selector القديم (#dark-mode-toggle) لأنه لم يعد مطلوباً */
+
+.theme-switch,
+.theme-switch *,
+.theme-switch *::before,
+.theme-switch *::after {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-size: var(--toggle-size);
+}
+
+.theme-switch__container {
+  width: var(--container-width);
+  height: var(--container-height);
+  background-color: var(--container-light-bg);
+  border-radius: var(--container-radius);
+  overflow: hidden;
+  position: relative;
+  transition: var(--transition);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+.theme-switch__container::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  -webkit-box-shadow:
+    0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset,
+    0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
+  box-shadow:
+    0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset,
+    0em 0.05em 0.187em rgba(0, 0, 0, 0.25) inset;
+  border-radius: var(--container-radius);
+}
+
+.theme-switch__checkbox {
+  display: none !important;
+}
+
+.theme-switch__circle-container {
+  width: var(--circle-container-diameter);
+  height: var(--circle-container-diameter);
+  background-color: rgba(255, 255, 255, 0.1);
+  position: absolute;
+  left: var(--circle-container-offset);
+  top: var(--circle-container-offset);
+  border-radius: var(--container-radius);
+  -webkit-box-shadow:
+    inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+    inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+    0 0 0 0.625em rgba(255, 255, 255, 0.1),
+    0 0 0 1.25em rgba(255, 255, 255, 0.1);
+  box-shadow:
+    inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+    inset 0 0 0 3.375em rgba(255, 255, 255, 0.1),
+    0 0 0 0.625em rgba(255, 255, 255, 0.1),
+    0 0 0 1.25em rgba(255, 255, 255, 0.1);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-transition: var(--circle-transition);
+  -o-transition: var(--circle-transition);
+  transition: var(--circle-transition);
+  pointer-events: none;
+}
+
+.theme-switch__sun-moon-container {
+  pointer-events: auto;
+  position: relative;
+  z-index: 2;
+  width: var(--sun-moon-diameter);
+  height: var(--sun-moon-diameter);
+  margin: auto;
+  border-radius: var(--container-radius);
+  background-color: var(--sun-bg);
+  -webkit-box-shadow:
+    0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+    0em -0.062em 0.062em 0em #a1872a inset;
+  box-shadow:
+    0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+    0em -0.062em 0.062em 0em #a1872a inset;
+  -webkit-filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25))
+    drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
+  filter: drop-shadow(0.062em 0.125em 0.125em rgba(0, 0, 0, 0.25))
+    drop-shadow(0em 0.062em 0.125em rgba(0, 0, 0, 0.25));
+  overflow: hidden;
+  -webkit-transition: var(--transition);
+  -o-transition: var(--transition);
+  transition: var(--transition);
+}
+
+.theme-switch__moon {
+  -webkit-transform: translateX(100%);
+  -ms-transform: translateX(100%);
+  transform: translateX(100%);
+  width: 100%;
+  height: 100%;
+  background-color: var(--moon-bg);
+  border-radius: inherit;
+  -webkit-box-shadow:
+    0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+    0em -0.062em 0.062em 0em #969696 inset;
+  box-shadow:
+    0.062em 0.062em 0.062em 0em rgba(254, 255, 239, 0.61) inset,
+    0em -0.062em 0.062em 0em #969696 inset;
+  -webkit-transition: var(--transition);
+  -o-transition: var(--transition);
+  transition: var(--transition);
+  position: relative;
+}
+
+.theme-switch__spot {
+  position: absolute;
+  top: 0.75em;
+  left: 0.312em;
+  width: 0.75em;
+  height: 0.75em;
+  border-radius: var(--container-radius);
+  background-color: var(--spot-color);
+  -webkit-box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
+  box-shadow: 0em 0.0312em 0.062em rgba(0, 0, 0, 0.25) inset;
+}
+
+.theme-switch__spot:nth-of-type(2) {
+  width: 0.375em;
+  height: 0.375em;
+  top: 0.937em;
+  left: 1.375em;
+}
+
+.theme-switch__spot:nth-last-of-type(3) {
+  width: 0.25em;
+  height: 0.25em;
+  top: 0.312em;
+  left: 0.812em;
+}
+
+.theme-switch__clouds {
+  width: 1.25em;
+  height: 1.25em;
+  background-color: var(--clouds-color);
+  border-radius: var(--container-radius);
+  position: absolute;
+  bottom: -0.625em;
+  left: 0.312em;
+  -webkit-box-shadow:
+    0.937em 0.312em var(--clouds-color),
+    -0.312em -0.312em var(--back-clouds-color),
+    1.437em 0.375em var(--clouds-color),
+    0.5em -0.125em var(--back-clouds-color),
+    2.187em 0 var(--clouds-color),
+    1.25em -0.062em var(--back-clouds-color),
+    2.937em 0.312em var(--clouds-color),
+    2em -0.312em var(--back-clouds-color),
+    3.625em -0.062em var(--clouds-color),
+    2.625em 0em var(--back-clouds-color),
+    4.5em -0.312em var(--clouds-color),
+    3.375em -0.437em var(--back-clouds-color),
+    4.625em -1.75em 0 0.437em var(--clouds-color),
+    4em -0.625em var(--back-clouds-color),
+    4.125em -2.125em 0 0.437em var(--back-clouds-color);
+  box-shadow:
+    0.937em 0.312em var(--clouds-color),
+    -0.312em -0.312em var(--back-clouds-color),
+    1.437em 0.375em var(--clouds-color),
+    0.5em -0.125em var(--back-clouds-color),
+    2.187em 0 var(--clouds-color),
+    1.25em -0.062em var(--back-clouds-color),
+    2.937em 0.312em var(--clouds-color),
+    2em -0.312em var(--back-clouds-color),
+    3.625em -0.062em var(--clouds-color),
+    2.625em 0em var(--back-clouds-color),
+    4.5em -0.312em var(--clouds-color),
+    3.375em -0.437em var(--back-clouds-color),
+    4.625em -1.75em 0 0.437em var(--clouds-color),
+    4em -0.625em var(--back-clouds-color),
+    4.125em -2.125em 0 0.437em var(--back-clouds-color);
+  -webkit-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+  -o-transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+  transition: 0.5s cubic-bezier(0, -0.02, 0.4, 1.25);
+}
+
+.theme-switch__stars-container {
+  position: absolute;
+  color: var(--stars-color);
+  top: -100%;
+  left: 0.312em;
+  width: 2.75em;
+  height: auto;
+  -webkit-transition: var(--transition);
+  -o-transition: var(--transition);
+  transition: var(--transition);
+}
+
+/* actions */
+
+.theme-switch__checkbox:checked + .theme-switch__container {
+  background-color: var(--container-night-bg);
+}
+
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__circle-container {
+  left: calc(
+    100% - var(--circle-container-offset) - var(--circle-container-diameter)
+  );
+}
+
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__circle-container:hover {
+  left: calc(
+    100% - var(--circle-container-offset) - var(--circle-container-diameter) -
+      0.187em
+  );
+}
+
+.theme-switch__circle-container:hover {
+  left: calc(var(--circle-container-offset) + 0.187em);
+}
+
+.theme-switch__checkbox:checked + .theme-switch__container .theme-switch__moon {
+  -webkit-transform: translate(0);
+  -ms-transform: translate(0);
+  transform: translate(0);
+}
+
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__clouds {
+  bottom: -4.062em;
+}
+
+.theme-switch__checkbox:checked
+  + .theme-switch__container
+  .theme-switch__stars-container {
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  transform: translateY(-50%);
+}
+
+/* الكروت: أوردرات، منيو، ريسيت */
+.order-item, .product-card, .receipt-card, .empty-state {
+  background: var(--card-bg) !important;
+  border: 1px solid var(--border-color) !important;
+  box-shadow: var(--shadow) !important;
+  color: var(--text-color) !important;
+}
+
+/* نصوص المعلومات الإضافية */
+.order-details, .item-row span, .product-info .name {
+  color: var(--text-color);
+}
+
+/* حقول الإدخال */
+input {
+  background-color: var(--input-bg) !important;
+  color: var(--text-color) !important;
+  border: 1px solid var(--border-color) !important;
+}
+
+/* التعديل لضمان قراءة السعر في الوضع الليلي */
+.product-info .price {
+  color: var(--primary-color) !important;
+}
+
+/* شريط البحث */
+#menu-search {
+  background-color: var(--card-bg);
+  color: var(--text-color);
+  border: 2px solid var(--border-color);
+}
+
+/* الأقسام (Tabs) */
+.category-tabs button {
+  background: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.category-tabs button:hover {
+  background: var(--card-bg);
+  color: var(--primary-color);
+}
+
+/* --- تعديلات لتحسين وضوح اسم المنتج والكمية --- */
+
+body.dark-mode .product-info, 
+body.dark-mode .quantity-section {
+    background-color: var(--card-bg) !important; /* تحويل الخلفية للداكن */
+    color: var(--text-color) !important;       /* تحويل النص للفاتح الواضح */
+    border-color: var(--border-color) !important;
+}
+
+body.dark-mode .product-info .name,
+body.dark-mode .quantity-section p {
+    color: var(--text-color) !important;
+    font-weight: 600; /* جعل الخط أكثر سمكاً للوضوح */
+}
+
+/* تحسين شكل العداد الرقمي في الوضع الليلي */
+body.dark-mode .controls span {
+    background-color: var(--input-bg);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
+}
+
+/* توحيد خلفية الرقم مع الكارت */
+.controls span {
+    background-color: transparent !important; /* إلغاء الخلفية البيضاء */
+    border: none !important;                /* إزالة الحدود لتجنب التباين */
+    box-shadow: none !important;            /* إزالة أي ظل قديم */
+    color: var(--text-color) !important;    /* التأكد من أن لون الرقم يتبع لون نص الوضع الحالي */
+    font-size: 1.5rem;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+
+/* تعديل إضافي لقسم الكمية في الوضع الليلي */
+body.dark-mode .quantity-section {
+    background-color: var(--card-bg) !important; /* ضمان مطابقة خلفية القسم للكارت */
+}
+
+body.dark-mode .controls span {
+    color: #ffffff !important; /* جعل الرقم أبيض ناصع في الوضع الليلي */
+}
+
+/* --- تخصيص السكرول بار في الوضع المظلم --- */
+body.dark-mode #cart-items {
+  /* لمتصفح Firefox */
+  scrollbar-color: #555 var(--card-bg);
+  scrollbar-width: thin;
+}
+
+/* لمتصفحات Chrome, Edge, Safari */
+body.dark-mode #cart-items::-webkit-scrollbar {
+  width: 8px; /* عرض شريط التمرير */
+}
+
+body.dark-mode #cart-items::-webkit-scrollbar-track {
+  background: var(--card-bg); /* لون المسار الخلفي (مطابق للكارت) */
+  border-radius: 10px;
+}
+
+body.dark-mode #cart-items::-webkit-scrollbar-thumb {
+  background: #555; /* لون المقبض (الرمادي الداكن) */
+  border-radius: 10px;
+  border: 2px solid var(--card-bg); /* إضافة حدود تجعل المقبض يبدو أنحف ومنفصل */
+}
+
+body.dark-mode #cart-items::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-color); /* يتحول للون الأخضر عند وضع الماوس عليه */
+}
+
+/* تحسين كارت الأوردر في الوضع الليلي */
+body.dark-mode .order-item {
+    background-color: var(--card-bg) !important;
+    border-top: 5px solid var(--secondary-color) !important; /* الخط الأزرق العلوي */
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+body.dark-mode .order-header {
+    background-color: rgba(255, 255, 255, 0.05) !important; /* خلفية داكنة خفيفة للاسم */
+    border-bottom: 1px dashed var(--border-color);
+}
+
+body.dark-mode .order-header strong {
+    color: var(--text-color) !important;
+}
+
+body.dark-mode .item-row {
+    color: var(--text-muted);
+    border-bottom: 1px solid var(--border-color);
+}
+
+/* جعل رقم الطاولة أوضح */
+body.dark-mode .table-badge {
+    background-color: var(--secondary-color);
+    color: #121212; /* نص داكن فوق خلفية فاتحة */
+}
+
+.order-footer {
+    padding: 15px;
+    display: flex;
+    justify-content: center; /* توسيط زر الحذف */
+}
+
+.delete-btn {
+    width: 90%;
+    padding: 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+/* --- تحسين كارت الأوردر بالكامل في الوضع الليلي --- */
+body.dark-mode .order-item {
+    background-color: var(--card-bg) !important;
+    border-top: 5px solid var(--secondary-color) !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+}
+
+/* 1. إصلاح خلفية الرأس (Customer Name & Table) */
+body.dark-mode .order-header {
+    background-color: rgba(255, 255, 255, 0.05) !important; /* رمادي داكن خفيف جداً */
+    border-bottom: 1px dashed var(--border-color) !important;
+}
+
+body.dark-mode .order-header strong {
+    color: var(--text-color) !important;
+}
+
+/* 2. إصلاح خلفية الجزء السفلي (حيث يوجد زر الحذف) */
+body.dark-mode .order-footer {
+    background-color: transparent !important; /* سيأخذ لون الكارت الداكن */
+    border-top: 1px solid var(--border-color) !important;
+}
+
+/* 3. تحسين شكل صفوف المنتجات بالداخل */
+body.dark-mode .item-row {
+    color: var(--text-color) !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+}
+
+/* 4. جعل شعار الكمية (x1) واضحاً */
+body.dark-mode .item-qty {
+    background-color: var(--secondary-color) !important;
+    color: #121212 !important; /* نص أسود فوق خلفية فاتحة للتباين */
 }

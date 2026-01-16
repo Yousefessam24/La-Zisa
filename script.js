@@ -289,7 +289,9 @@ function deleteOrder(index) {
 // Render menu
 function renderMenu(searchTerm = "") {
   // تفريغ الأقسام
-  document.querySelectorAll(".menu-section .items").forEach((section) => (section.innerHTML = ""));
+  document
+    .querySelectorAll(".menu-section .items")
+    .forEach((section) => (section.innerHTML = ""));
 
   const categories = {
     Drinks: document.querySelector("#drinks-section .items"),
@@ -299,8 +301,8 @@ function renderMenu(searchTerm = "") {
   };
 
   // تصفية المنتجات بناءً على البحث
-  const filteredProducts = products.filter(product => 
-    product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredProducts = products.filter((product) =>
+    product.name.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   filteredProducts.forEach((product) => {
@@ -329,9 +331,10 @@ function renderMenu(searchTerm = "") {
   });
 
   // إخفاء العناوين الفارغة إذا لم توجد نتائج في القسم
-  Object.keys(categories).forEach(cat => {
-      const section = document.getElementById(`${cat.toLowerCase()}-section`);
-      section.style.display = categories[cat].children.length > 0 ? "block" : "none";
+  Object.keys(categories).forEach((cat) => {
+    const section = document.getElementById(`${cat.toLowerCase()}-section`);
+    section.style.display =
+      categories[cat].children.length > 0 ? "block" : "none";
   });
 }
 
@@ -340,7 +343,7 @@ function changeQuantity(productId, delta) {
   const product = products.find((p) => p.id === productId);
   const quantitySpan = document.getElementById(`quantity-${productId}`);
   const totalSpan = document.getElementById(`total-price-${productId}`);
-  
+
   // الحصول على عناصر الواجهة لإضافة التأثيرات
   const card = quantitySpan.closest(".product-card");
   const plusBtn = card.querySelector(".btn-plus");
@@ -380,26 +383,75 @@ function changeQuantity(productId, delta) {
 // Render cart
 
 // Confirm order
+// دالة تأكيد الطلب المحدثة بالتنبيهات الذكية
 function confirmOrder() {
   const customerName = customerNameInput.value.trim();
   const tableNumber = tableNumberInput.value.trim();
-  if (!customerName || !tableNumber || cart.length === 0) {
-    alert("Please fill in all fields and add items to the cart");
+
+  // 1. التحقق من الحقول الفارغة والسلة
+  if (!customerName || !tableNumber) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'Missing Information',
+      text: 'Please enter the customer name and table number first!',
+      confirmButtonColor: '#28a745'
+    });
     return;
   }
+
+  if (cart.length === 0) {
+    Swal.fire({
+      icon: 'error',
+      title: 'The Cart is Empty',
+      text: 'No items in the cart to confirm the order!',
+      confirmButtonColor: '#dc3545'
+    });
+    return;
+  }
+
+  // 2. الميزة الجديدة: التحقق من وجود طاولة مشغولة بنفس الرقم
+  // نقوم بالبحث في مصفوفة orders عن أي طلب يطابق رقم الطاولة المدخل
+  const isTableOccupied = orders.some(order => order.tableNumber === tableNumber);
+
+  if (isTableOccupied) {
+    Swal.fire({
+      icon: 'warning',
+      title: 'This Table is Occupied',
+      text: `Warning: Table ${tableNumber} is currently occupied. Please resure your table number.`,
+      confirmButtonColor: '#f39c12'
+    });
+    return; // التوقف عن إتمام الطلب
+  }
+
+  // 3. إذا كانت الطاولة غير مشغولة، يتم حفظ الطلب بشكل طبيعي
   const order = {
     customerName,
     tableNumber,
     items: [...cart],
     date: new Date().toISOString(),
   };
+  
   orders.push(order);
-  localStorage.setItem("orders", JSON.stringify(orders));
+  localStorage.setItem("orders", JSON.stringify(orders)); // حفظ في التخزين المحلي
+  
+  // تنظيف الواجهة والعودة للرئيسية
   cart = [];
   customerNameInput.value = "";
   tableNumberInput.value = "";
+  document.querySelectorAll('[id^="quantity-"]').forEach(span => span.innerText = "0");
+  document.querySelectorAll('[id^="total-price-"]').forEach(span => span.innerText = "0");
+
   showPage("home");
   renderOrders();
+
+  Swal.fire({
+    icon: "success",
+    title: "Order Confirmed!",
+    text: "Your order has been successfully confirmed.",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true
+  });
 }
 
 // Events
@@ -411,6 +463,17 @@ addOrderBtn.addEventListener("click", () => {
 backToHomeBtn.addEventListener("click", () => showPage("home"));
 
 viewCartBtn.addEventListener("click", () => {
+  // التحقق مما إذا كانت السلة فارغة
+  if (cart.length === 0) {
+    Swal.fire({
+      icon: 'info',
+      title: 'The Cart is Empty',
+      text: 'Sorry, you must add items to the menu first before viewing the cart!',
+      confirmButtonColor: '#ff9800'
+    });
+    return; // التوقف وعدم فتح صفحة الريسيت
+  }
+
   renderCart();
   showPage("receipt");
 });
@@ -453,7 +516,7 @@ function renderOrders() {
                     <span>${item.name}</span>
                     <span class="item-qty">x${item.quantity}</span>
                 </div>
-            `
+            `,
               )
               .join("")}
         </div>
@@ -474,8 +537,8 @@ function renderCart() {
     itemDiv.className = "cart-item";
     itemDiv.innerHTML = `
             <span>${item.name} | ${item.quantity} x ${item.price} = ${(
-      item.quantity * item.price
-    ).toFixed(2)} EGP</span>
+              item.quantity * item.price
+            ).toFixed(2)} EGP</span>
         `;
     cartItems.appendChild(itemDiv);
     total += item.quantity * item.price;
@@ -490,75 +553,100 @@ document.getElementById("menu-search").addEventListener("input", (e) => {
 
 // دالة التنقل السريع للأقسام
 function scrollToCategory(sectionId) {
-    const section = document.getElementById(sectionId);
-    if (section) {
-        // حساب الارتفاع لترك مسافة بسيطة من الأعلى لكي لا يغطي الـ Tabs العنوان
-        const offset = 80; 
-        const bodyRect = document.body.getBoundingClientRect().top;
-        const elementRect = section.getBoundingClientRect().top;
-        const elementPosition = elementRect - bodyRect;
-        const offsetPosition = elementPosition - offset;
+  const section = document.getElementById(sectionId);
+  if (section) {
+    // حساب الارتفاع لترك مسافة بسيطة من الأعلى لكي لا يغطي الـ Tabs العنوان
+    const offset = 80;
+    const bodyRect = document.body.getBoundingClientRect().top;
+    const elementRect = section.getBoundingClientRect().top;
+    const elementPosition = elementRect - bodyRect;
+    const offsetPosition = elementPosition - offset;
 
-        window.scrollTo({
-            top: offsetPosition,
-            behavior: "smooth"
-        });
-    }
+    window.scrollTo({
+      top: offsetPosition,
+      behavior: "smooth",
+    });
+  }
 }
 
 // يمكنك إضافة هذا الكود لضمان أن المتصفح يحدث البيانات قبل الطباعة
 window.onbeforeprint = () => {
-    const name = customerNameInput.value || "N/A";
-    const table = tableNumberInput.value || "N/A";
-    // يمكنك هنا إضافة منطق لعرض البيانات كنص بدلاً من حقول إدخال إذا رغبت
+  const name = customerNameInput.value || "N/A";
+  const table = tableNumberInput.value || "N/A";
+  // يمكنك هنا إضافة منطق لعرض البيانات كنص بدلاً من حقول إدخال إذا رغبت
 };
 
-
 function prepareAndPrint() {
-    const name = document.getElementById("customer-name").value;
-    const table = document.getElementById("table-number").value;
+  const name = document.getElementById("customer-name").value;
+  const table = document.getElementById("table-number").value;
 
-    if (!name || !table) {
-        alert("Please enter customer name and table number before printing");
-        return;
-    }
+  if (!name || !table) {
+    Swal.fire({
+      icon: "warning",
+      title: "Missing Data",
+      text: "Please enter customer name and table number!",
+      confirmButtonColor: "#28a745",
+    });
+    return;
+  }
 
-    // 1. تحديث الاسم والطاولة
-    document.getElementById("display-name").innerText = name;
-    document.getElementById("display-table").innerText = table;
+  // 1. تحديث الاسم والطاولة
+  document.getElementById("display-name").innerText = name;
+  document.getElementById("display-table").innerText = table;
 
-    // 2. توليد التاريخ والوقت الحالي
-    const now = new Date();
-    const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
-    const timeOptions = { hour: '2-digit', minute: '2-digit', second: '2-digit' };
-    
-    const formattedDate = now.toLocaleDateString('en-GB', dateOptions);
-    const formattedTime = now.toLocaleTimeString('en-GB', timeOptions);
-    
-    document.getElementById("display-datetime").innerText = `${formattedDate} | ${formattedTime}`;
+  // 2. توليد التاريخ والوقت الحالي
+  const now = new Date();
+  const dateOptions = { year: "numeric", month: "2-digit", day: "2-digit" };
+  const timeOptions = { hour: "2-digit", minute: "2-digit", second: "2-digit" };
 
-    // 3. تشغيل الطباعة
-    window.print();
+  const formattedDate = now.toLocaleDateString("en-GB", dateOptions);
+  const formattedTime = now.toLocaleTimeString("en-GB", timeOptions);
+
+  document.getElementById("display-datetime").innerText =
+    `${formattedDate} | ${formattedTime}`;
+
+  // 3. تشغيل الطباعة
+  window.print();
 }
 
 // تعديل بسيط في renderCart للتأكد من انسيابية الأصناف
 function renderCart() {
-    cartItems.innerHTML = "";
-    let total = 0;
-    cart.forEach((item) => {
-        const itemDiv = document.createElement("div");
-        itemDiv.className = "cart-item";
-        itemDiv.style.display = "flex";
-        itemDiv.style.justifyContent = "space-between";
-        itemDiv.style.width = "100%";
-        itemDiv.style.marginBottom = "5px";
-        
-        itemDiv.innerHTML = `
+  cartItems.innerHTML = "";
+  let total = 0;
+  cart.forEach((item) => {
+    const itemDiv = document.createElement("div");
+    itemDiv.className = "cart-item";
+    itemDiv.style.display = "flex";
+    itemDiv.style.justifyContent = "space-between";
+    itemDiv.style.width = "100%";
+    itemDiv.style.marginBottom = "5px";
+
+    itemDiv.innerHTML = `
             <span>${item.name} x ${item.quantity}</span>
             <span>${(item.quantity * item.price).toFixed(2)} EGP</span>
         `;
-        cartItems.appendChild(itemDiv);
-        total += item.quantity * item.price;
-    });
-    totalAmount.innerText = total.toFixed(2);
+    cartItems.appendChild(itemDiv);
+    total += item.quantity * item.price;
+  });
+  totalAmount.innerText = total.toFixed(2);
 }
+
+const darkModeToggle = document.getElementById("dark-mode-toggle");
+const body = document.body;
+
+// التحقق من التفضيل المحفوظ سابقاً وتعديل حالة الـ checkbox
+if (localStorage.getItem("theme") === "dark") {
+  body.classList.add("dark-mode");
+  darkModeToggle.checked = true; // تفعيل الـ toggle بصرياً
+}
+
+// الاستماع للتغيير (Change) في الـ checkbox
+darkModeToggle.addEventListener("change", () => {
+  if (darkModeToggle.checked) {
+    body.classList.add("dark-mode");
+    localStorage.setItem("theme", "dark");
+  } else {
+    body.classList.remove("dark-mode");
+    localStorage.setItem("theme", "light");
+  }
+});
