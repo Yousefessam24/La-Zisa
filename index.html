@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>La Zisa - Order System</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+      integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+  </head>
+  <body>
+    <div id="home" class="page active">
+  <h1>Orders</h1>
+  <button id="add-order-btn"><i class="fas fa-plus"></i> Add New Order</button>
+  <div id="orders-list">
+    </div>
+</div>
+
+<div id="menu" class="page">
+  <h1>Menu</h1>
+  <button id="back-to-home"><i class="fas fa-arrow-left"></i> Back</button>
+
+  <div class="search-wrapper">
+    <div class="search-box">
+      <i class="fas fa-search"></i>
+      <input type="text" id="menu-search" placeholder="Search for your favorite food...">
+    </div>
+  </div>
+
+  <div class="category-tabs">
+    <button onclick="scrollToCategory('drinks-section')">Drinks</button>
+    <button onclick="scrollToCategory('breakfast-section')">Breakfast</button>
+    <button onclick="scrollToCategory('lunch-section')">Lunch</button>
+    <button onclick="scrollToCategory('desserts-section')">Desserts</button>
+  </div>
+
+  <div id="menu-items">
+    <div class="menu-section" id="drinks-section">
+      <h2>Drinks</h2>
+      <div class="items"></div>
+    </div>
+    <div class="menu-section" id="breakfast-section">
+      <h2>Breakfast</h2>
+      <div class="items"></div>
+    </div>
+    <div class="menu-section" id="lunch-section">
+      <h2>Lunch</h2>
+      <div class="items"></div>
+    </div>
+    <div class="menu-section" id="desserts-section">
+      <h2>Desserts</h2>
+      <div class="items"></div>
+    </div>
+  </div>
+  
+  <button id="view-cart"><i class="fas fa-shopping-cart"></i> View Cart</button>
+</div>
+    <div id="receipt" class="page">
+    <button id="back-to-menu">
+        <i class="fas fa-arrow-left"></i> Back to Menu
+    </button>
+
+    <div class="receipt-card">
+      <img src="images/logo3.png" id="receipt-logo" alt="Restaurant Logo">
+    <h1>Receipt</h1>
+    <div id="receipt-customer-info" >
+        <p><strong>Customer:</strong> <span id="display-name">-</span></p>
+        <p><strong>Table:</strong> <span id="display-table">-</span></p>
+        <p><strong>Date & Time:</strong> <span id="display-datetime">-</span></p>
+    </div>
+
+    <div id="cart-items"></div>
+    <div id="total">Total: <span id="total-amount">0</span> EGP</div>
+    
+    <input type="text" id="customer-name" placeholder="Customer Name" />
+    <input type="text" id="table-number" placeholder="Table Number" />
+    
+    <div class="receipt-buttons">
+        <button id="confirm-order">Confirm Order</button>
+        <button id="print-receipt" onclick="prepareAndPrint()">
+            <i class="fas fa-print"></i> Print
+        </button>
+    </div>
+</div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
